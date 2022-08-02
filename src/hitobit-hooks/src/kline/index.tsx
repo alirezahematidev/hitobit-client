@@ -3,7 +3,7 @@ import {
   KLineInterval,
   useGetExchangeV1PublicKlines,
 } from "hitobit-services";
-import { ReactNode } from "react";
+import { createContext, ReactNode, useContext } from "react";
 import { useQueryClient } from "react-query";
 import {
   HapiIntervalToSocket,
@@ -11,13 +11,18 @@ import {
   SocketIntervalToHapi,
 } from "../socketConnection";
 
-interface Props {
+interface KlinesProviderProps {
   children: ReactNode;
   interval: KLineInterval;
   symbol: string;
 }
 
-const KlinesProvider = ({ children, symbol, interval }: Props) => {
+const KlineContext = createContext<Omit<KlinesProviderProps, "children">>({
+  interval: "OneDay",
+  symbol: "",
+});
+
+const Provider = ({ children, symbol, interval }: KlinesProviderProps) => {
   const queryClient = useQueryClient();
 
   SocketConnection.useEvent(
@@ -70,16 +75,20 @@ const KlinesProvider = ({ children, symbol, interval }: Props) => {
     },
   );
 
-  return <>{children}</>;
+  return (
+    <KlineContext.Provider value={{ interval, symbol }}>
+      {children}
+    </KlineContext.Provider>
+  );
 };
 
-function useKlines({
-  symbol,
-  interval,
-}: {
-  symbol: string;
-  interval: KLineInterval;
-}) {
+function useKlines() {
+  if (typeof KlineContext === "undefined") {
+    throw new Error("useKlines hook must be used under the KlinesProvider.");
+  }
+
+  const { interval, symbol } = useContext(KlineContext);
+
   const { data: klines, isLoading: isKlinesLoading } =
     useGetExchangeV1PublicKlines(
       { symbol, interval, limit: 200 },
@@ -98,4 +107,9 @@ function useKlines({
   };
 }
 
-export { useKlines, KlinesProvider };
+const kline = {
+  Provider,
+  useKlines,
+};
+
+export { kline };
