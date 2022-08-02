@@ -84,7 +84,7 @@ function useKlines({
 }) {
   const { data: klines, isLoading: isKlinesLoading } =
     useGetExchangeV1PublicKlines(
-      { symbol, interval: interval || "OneDay", limit: 200 },
+      { symbol, interval, limit: 200 },
       {
         cacheTime: 2 * 60 * 1000,
         staleTime: 2 * 60 * 1000,

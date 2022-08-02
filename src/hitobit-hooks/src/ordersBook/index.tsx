@@ -13,6 +13,7 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -181,8 +182,10 @@ const OrderBookProvider = memo<Props>(({ children }) => {
 
   const isLoading = isMarketTickerLoading || isDepthLoading;
 
+  const value = useMemo(() => ({ ...state, isLoading }), [isLoading, state]);
+
   return (
-    <OrderBookContext.Provider value={{ ...state, isLoading }}>
+    <OrderBookContext.Provider value={value}>
       {children}
     </OrderBookContext.Provider>
   );
