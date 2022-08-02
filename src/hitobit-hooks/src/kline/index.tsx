@@ -13,17 +13,15 @@ import {
 
 interface Props {
   children: ReactNode;
-  interval?: KLineInterval;
+  interval: KLineInterval;
   symbol: string;
 }
 
-const KlinesProvider = ({ children, symbol, interval = "OneDay" }: Props) => {
+const KlinesProvider = ({ children, symbol, interval }: Props) => {
   const queryClient = useQueryClient();
 
   SocketConnection.useEvent(
-    `${symbol?.toLowerCase()}@kline_${[
-      HapiIntervalToSocket[interval] ?? "OneDay",
-    ]}`,
+    `${symbol?.toLowerCase()}@kline_${[HapiIntervalToSocket[interval]]}`,
     (data) => {
       if (!data) return;
 
@@ -80,7 +78,7 @@ function useKlines({
   interval,
 }: {
   symbol: string;
-  interval?: KLineInterval;
+  interval: KLineInterval;
 }) {
   const { data: klines, isLoading: isKlinesLoading } =
     useGetExchangeV1PublicKlines(
