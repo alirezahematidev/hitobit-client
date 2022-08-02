@@ -1,9 +1,9 @@
 import {
-  GetExchangeV1PublicKlinesQueryParams,
   KlineDataResponseVM,
+  KLineInterval,
   useGetExchangeV1PublicKlines,
 } from "hitobit-services";
-import { selectedSymbolStore } from "hitobit-store";
+import { ReactNode } from "react";
 import { useQueryClient } from "react-query";
 import {
   HapiIntervalToSocket,
@@ -12,13 +12,12 @@ import {
 } from "../socketConnection";
 
 interface Props {
-  children: any;
+  children: ReactNode;
+  interval?: KLineInterval;
+  symbol: string;
 }
 
-const KlinesProvider = ({ children }: Props) => {
-  const { selectedSymbol: { symbol } = {}, interval = "OneDay" } =
-    selectedSymbolStore.useState();
-
+const KlinesProvider = ({ children, symbol, interval = "OneDay" }: Props) => {
   const queryClient = useQueryClient();
 
   SocketConnection.useEvent(
@@ -77,18 +76,15 @@ const KlinesProvider = ({ children }: Props) => {
 };
 
 function useKlines({
-  constantInterval,
-}:
-  | {
-      constantInterval?: GetExchangeV1PublicKlinesQueryParams["interval"];
-    }
-  | undefined = {}) {
-  const { selectedSymbol: { symbol } = {}, interval } =
-    selectedSymbolStore.useState();
-
+  symbol,
+  interval,
+}: {
+  symbol: string;
+  interval?: KLineInterval;
+}) {
   const { data: klines, isLoading: isKlinesLoading } =
     useGetExchangeV1PublicKlines(
-      { symbol, interval: constantInterval || interval, limit: 200 },
+      { symbol, interval: interval || "OneDay", limit: 200 },
       {
         cacheTime: 2 * 60 * 1000,
         staleTime: 2 * 60 * 1000,
