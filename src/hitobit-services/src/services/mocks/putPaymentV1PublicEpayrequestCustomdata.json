@@ -1,6 +1,6 @@
 {
-  "method": "get",
-  "path": "/payment/v1/private/epayrequest/info/clientuniqueid",
+  "method": "put",
+  "path": "/payment/v1/public/epayrequest/customdata",
   "response": {
     "200": {
       "epayRequestGatewayType": {

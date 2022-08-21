@@ -260,6 +260,7 @@ export interface CancelOrderResponseVM {
   /** - Format: date-time */
   transactTime: string;
   type: AppOrderType;
+  baseCurrencySymbol?: string;
   clientOrderId?: string;
   /** - Format: double */
   origQty?: number;
@@ -267,6 +268,7 @@ export interface CancelOrderResponseVM {
   origQuoteOrderQty?: number;
   /** - Format: double */
   price?: number;
+  quoteCurrencySymbol?: string;
   /** - Format: double */
   stopPrice?: number;
   symbol?: string;
@@ -398,6 +400,7 @@ export interface CreateLinkRequestRequestVM {
   isAutoConfirm: boolean;
   notifyAudience: boolean;
   payViaOtherCurrency: boolean;
+  assignedToAnonymous?: string;
   /** - Format: uuid */
   assignedToUserId?: string;
   audiences?: EPayRequestAudienceRequestVM[];
@@ -624,52 +627,12 @@ export interface EPayRequestAudienceResponseVM {
   fullName?: string;
 }
 
-export interface EPayRequestInfoResponseVM {
-  /** - Format: double */
-  amount: number;
-  /** - Format: uuid */
-  assignedToUserId: string;
-  /** - Format: double */
-  commissionAmount: number;
-  /** - Format: date-time */
-  createDate: string;
-  epayRequestGatewayType: EpayRequestGatewayType;
-  epayRequestType: EpayRequestType;
-  /** - Format: date-time */
-  expireDate: string;
-  getComissionFromPayer: boolean;
-  payViaOtherCurrency: boolean;
-  /** - Format: double */
-  payerAmount: number;
-  status: EpayRequestActualState;
-  assignedUserDisplayName?: string;
-  audiences?: EPayRequestAudienceResponseVM[];
-  cardNumber?: string;
-  clientUniqueId?: string;
-  currencySymbol?: string;
-  description?: string;
-  epayRequestCustomDataInfos?: EpayRequestCustomDataInfoResponseVM[];
-  /** - Format: date-time */
-  payDate?: string;
-  payTo?: UserWalletInfoResponseVM[];
-  payerCurrencySymbol?: string;
-  payerDisplayName?: string;
-  pluginKey?: string;
-  postActionInfo?: BasePostActionInfoResponseVM;
-  referenceNumber?: string;
-  token?: string;
-  /** - Format: int64 */
-  voucherId?: number;
-}
-
 export interface EPayRequestReceiptInfoResponseVM {
   /** - Format: double */
   amount: number;
   epayRequestGatewayType: EpayRequestGatewayType;
   epayRequestStatus: EpayRequestStatus;
   epayRequestType: EpayRequestType;
-  /** - Format: date-time */
-  payDate: string;
   payViaOtherCurrency: boolean;
   /** - Format: double */
   payerAmount: number;
@@ -677,6 +640,8 @@ export interface EPayRequestReceiptInfoResponseVM {
   cardNumber?: string;
   currencySymbol?: string;
   description?: string;
+  /** - Format: date-time */
+  payDate?: string;
   payTo?: UserWalletInfoResponseVM[];
   payerCurrencySymbol?: string;
   referenceNumber?: string;
@@ -744,6 +709,44 @@ export interface EpayRequestCustomDataResponseVM {
 }
 
 export type EpayRequestGatewayType = "RialShaparak" | "BlockchainAddress";
+
+export interface EpayRequestInfoResponseVM {
+  /** - Format: double */
+  amount: number;
+  /** - Format: uuid */
+  assignedToUserId: string;
+  /** - Format: double */
+  commissionAmount: number;
+  /** - Format: date-time */
+  createDate: string;
+  epayRequestGatewayType: EpayRequestGatewayType;
+  epayRequestType: EpayRequestType;
+  /** - Format: date-time */
+  expireDate: string;
+  getComissionFromPayer: boolean;
+  payViaOtherCurrency: boolean;
+  /** - Format: double */
+  payerAmount: number;
+  status: EpayRequestActualState;
+  assignedUserDisplayName?: string;
+  audiences?: EPayRequestAudienceResponseVM[];
+  cardNumber?: string;
+  clientUniqueId?: string;
+  currencySymbol?: string;
+  description?: string;
+  epayRequestCustomDataInfos?: EpayRequestCustomDataInfoResponseVM[];
+  /** - Format: date-time */
+  payDate?: string;
+  payTo?: UserWalletInfoResponseVM[];
+  payerCurrencySymbol?: string;
+  payerDisplayName?: string;
+  pluginKey?: string;
+  postActionInfo?: BasePostActionInfoResponseVM;
+  referenceNumber?: string;
+  token?: string;
+  /** - Format: int64 */
+  voucherId?: number;
+}
 
 export interface EpayRequestListResponseVM {
   /** - Format: int64 */
@@ -1046,6 +1049,8 @@ export interface GetExchangeV1PrivateAlltradesQueryParams {
   commissionCurrencySymbol?: string;
   /** - Format: date-time */
   endTime?: string;
+  /** - Format: int64 */
+  orderId?: number;
   /** - Format: int32 */
   pageNo?: number;
   /** - Format: int32 */
@@ -1173,10 +1178,6 @@ export interface GetPaymentV1PrivateEpayrequestInfoClientuniqueidQueryParams {
   clientUniqueId?: string;
 }
 
-export interface GetPaymentV1PrivateEpayrequestInfoTokenQueryParams {
-  token?: string;
-}
-
 export interface GetPaymentV1PrivateEpayrequestListFrommeQueryParams {
   /** - Format: date-time */
   endDate?: string;
@@ -1217,10 +1218,6 @@ export interface GetPaymentV1PrivateEpayrequestPluginCountQueryParams {
   walletNumber?: string;
 }
 
-export interface GetPaymentV1PrivateEpayrequestSmsResendQueryParams {
-  token?: string;
-}
-
 export interface GetPaymentV1PublicEpayrequestGetblockchainaddressQueryParams {
   /** - Format: int32 */
   currencyId?: number;
@@ -1230,11 +1227,19 @@ export interface GetPaymentV1PublicEpayrequestGetblockchainaddressQueryParams {
   moneyNetworkId?: number;
 }
 
+export interface GetPaymentV1PublicEpayrequestInfoTokenQueryParams {
+  token?: string;
+}
+
 export interface GetPaymentV1PublicEpayrequestReceiptinfoClientuniqueidQueryParams {
   clientUniqueId?: string;
 }
 
 export interface GetPaymentV1PublicEpayrequestReceiptinfoTokenQueryParams {
+  token?: string;
+}
+
+export interface GetPaymentV1PublicEpayrequestSmsResendQueryParams {
   token?: string;
 }
 
@@ -1883,6 +1888,7 @@ export interface OrderFullInfoResponseVM {
   /** - Format: date-time */
   transactTime: string;
   type: AppOrderType;
+  baseCurrencySymbol?: string;
   clientOrderId?: string;
   fills?: OrderTradeResponseVM[];
   /** - Format: double */
@@ -1891,6 +1897,7 @@ export interface OrderFullInfoResponseVM {
   origQuoteOrderQty?: number;
   /** - Format: double */
   price?: number;
+  quoteCurrencySymbol?: string;
   /** - Format: double */
   stopPrice?: number;
   symbol?: string;
@@ -1926,6 +1933,7 @@ export interface OrderResultInfoResponseVM {
   /** - Format: date-time */
   transactTime: string;
   type: AppOrderType;
+  baseCurrencySymbol?: string;
   clientOrderId?: string;
   /** - Format: double */
   origQty?: number;
@@ -1933,6 +1941,7 @@ export interface OrderResultInfoResponseVM {
   origQuoteOrderQty?: number;
   /** - Format: double */
   price?: number;
+  quoteCurrencySymbol?: string;
   /** - Format: double */
   stopPrice?: number;
   symbol?: string;
@@ -2053,9 +2062,12 @@ export interface PluginPropertyRequestVM {
 
 export interface PluginPropertyResponseVM {
   fieldType: FieldDisplayType;
+  isCreatable: boolean;
   isListable: boolean;
   isRequired: boolean;
   isSearchable: boolean;
+  /** - Format: int32 */
+  order: number;
   description?: string;
   listValues?: string;
   name?: string;
@@ -2546,6 +2558,8 @@ export interface TradeReferralCommissionRankingResponseVM {
 export interface TradeResponseVM {
   /** - Format: double */
   commission: number;
+  /** - Format: int64 */
+  orderId: number;
   /** - Format: double */
   price: number;
   /** - Format: double */
@@ -2836,6 +2850,7 @@ export interface UserPluginResponseVM {
 
 export interface UserPluginTogggleRequestVM {
   isActive: boolean;
+  config?: string;
   pluginKey?: string;
 }
 

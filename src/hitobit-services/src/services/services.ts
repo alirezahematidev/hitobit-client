@@ -53,7 +53,7 @@ import {
   DomainTraderLevelResponseVM,
   EpayPayWithWalletRequestVM,
   EpayRequestCountResponseVM,
-  EPayRequestInfoResponseVM,
+  EpayRequestInfoResponseVM,
   EpayRequestListResponseVM,
   EPayRequestReceiptInfoResponseVM,
   EpayRequestResponseVM,
@@ -103,14 +103,14 @@ import {
   GetPaymentV1PrivateEpayrequestCountFrommeQueryParams,
   GetPaymentV1PrivateEpayrequestCountQueryParams,
   GetPaymentV1PrivateEpayrequestInfoClientuniqueidQueryParams,
-  GetPaymentV1PrivateEpayrequestInfoTokenQueryParams,
   GetPaymentV1PrivateEpayrequestListFrommeQueryParams,
   GetPaymentV1PrivateEpayrequestListQueryParams,
   GetPaymentV1PrivateEpayrequestPluginCountQueryParams,
-  GetPaymentV1PrivateEpayrequestSmsResendQueryParams,
   GetPaymentV1PublicEpayrequestGetblockchainaddressQueryParams,
+  GetPaymentV1PublicEpayrequestInfoTokenQueryParams,
   GetPaymentV1PublicEpayrequestReceiptinfoClientuniqueidQueryParams,
   GetPaymentV1PublicEpayrequestReceiptinfoTokenQueryParams,
+  GetPaymentV1PublicEpayrequestSmsResendQueryParams,
   GetSettlementV1PrivateAddressbookQueryParams,
   GetSettlementV1PrivateCommissionQueryParams,
   GetSettlementV1PrivateCountQueryParams,
@@ -232,6 +232,7 @@ import {
 } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const __DEV__ = process.env.NODE_ENV !== "production";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function overrideConfig(
@@ -1594,7 +1595,7 @@ getPaymentV1PrivateEpayrequestCountFromme.key =
 export const getPaymentV1PrivateEpayrequestInfoClientuniqueid = (
   queryParams?: GetPaymentV1PrivateEpayrequestInfoClientuniqueidQueryParams,
   configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<EPayRequestInfoResponseVM>> => {
+): Promise<SwaggerResponse<EpayRequestInfoResponseVM>> => {
   return Http.getRequest(
     getPaymentV1PrivateEpayrequestInfoClientuniqueid.key,
     queryParams,
@@ -1607,23 +1608,6 @@ export const getPaymentV1PrivateEpayrequestInfoClientuniqueid = (
 /** Key is end point string without base url */
 getPaymentV1PrivateEpayrequestInfoClientuniqueid.key =
   "/payment/v1/private/epayrequest/info/clientuniqueid";
-
-export const getPaymentV1PrivateEpayrequestInfoToken = (
-  queryParams?: GetPaymentV1PrivateEpayrequestInfoTokenQueryParams,
-  configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<EPayRequestInfoResponseVM>> => {
-  return Http.getRequest(
-    getPaymentV1PrivateEpayrequestInfoToken.key,
-    queryParams,
-    undefined,
-    undefined,
-    overrideConfig(_CONSTANT1, configOverride),
-  );
-};
-
-/** Key is end point string without base url */
-getPaymentV1PrivateEpayrequestInfoToken.key =
-  "/payment/v1/private/epayrequest/info/token";
 
 export const getPaymentV1PrivateEpayrequestList = (
   queryParams?: GetPaymentV1PrivateEpayrequestListQueryParams,
@@ -1675,23 +1659,6 @@ export const getPaymentV1PrivateEpayrequestPluginCount = (
 getPaymentV1PrivateEpayrequestPluginCount.key =
   "/payment/v1/private/epayrequest/plugin/count";
 
-export const getPaymentV1PrivateEpayrequestSmsResend = (
-  queryParams?: GetPaymentV1PrivateEpayrequestSmsResendQueryParams,
-  configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<any>> => {
-  return Http.getRequest(
-    getPaymentV1PrivateEpayrequestSmsResend.key,
-    queryParams,
-    undefined,
-    undefined,
-    overrideConfig(_CONSTANT0, configOverride),
-  );
-};
-
-/** Key is end point string without base url */
-getPaymentV1PrivateEpayrequestSmsResend.key =
-  "/payment/v1/private/epayrequest/sms/resend";
-
 export const getPaymentV1PublicEpayrequestGetblockchainaddress = (
   queryParams?: GetPaymentV1PublicEpayrequestGetblockchainaddressQueryParams,
   configOverride?: AxiosRequestConfig,
@@ -1708,6 +1675,23 @@ export const getPaymentV1PublicEpayrequestGetblockchainaddress = (
 /** Key is end point string without base url */
 getPaymentV1PublicEpayrequestGetblockchainaddress.key =
   "/payment/v1/public/epayrequest/getblockchainaddress";
+
+export const getPaymentV1PublicEpayrequestInfoToken = (
+  queryParams?: GetPaymentV1PublicEpayrequestInfoTokenQueryParams,
+  configOverride?: AxiosRequestConfig,
+): Promise<SwaggerResponse<EpayRequestInfoResponseVM>> => {
+  return Http.getRequest(
+    getPaymentV1PublicEpayrequestInfoToken.key,
+    queryParams,
+    undefined,
+    undefined,
+    overrideConfig(_CONSTANT1, configOverride),
+  );
+};
+
+/** Key is end point string without base url */
+getPaymentV1PublicEpayrequestInfoToken.key =
+  "/payment/v1/public/epayrequest/info/token";
 
 export const getPaymentV1PublicEpayrequestReceiptinfoClientuniqueid = (
   queryParams?: GetPaymentV1PublicEpayrequestReceiptinfoClientuniqueidQueryParams,
@@ -1742,6 +1726,23 @@ export const getPaymentV1PublicEpayrequestReceiptinfoToken = (
 /** Key is end point string without base url */
 getPaymentV1PublicEpayrequestReceiptinfoToken.key =
   "/payment/v1/public/epayrequest/receiptinfo/token";
+
+export const getPaymentV1PublicEpayrequestSmsResend = (
+  queryParams?: GetPaymentV1PublicEpayrequestSmsResendQueryParams,
+  configOverride?: AxiosRequestConfig,
+): Promise<SwaggerResponse<any>> => {
+  return Http.getRequest(
+    getPaymentV1PublicEpayrequestSmsResend.key,
+    queryParams,
+    undefined,
+    undefined,
+    overrideConfig(_CONSTANT0, configOverride),
+  );
+};
+
+/** Key is end point string without base url */
+getPaymentV1PublicEpayrequestSmsResend.key =
+  "/payment/v1/public/epayrequest/sms/resend";
 
 export const getSettlementV1Private = (
   queryParams?: GetSettlementV1PrivateQueryParams,
@@ -3246,12 +3247,12 @@ export const putPartyV1PrivateNotificationReadall = (
 putPartyV1PrivateNotificationReadall.key =
   "/party/v1/private/notification/readall";
 
-export const putPartyV1PrivatePluginChangestatus = (
+export const putPartyV1PrivatePlugin = (
   requestBody: UserPluginTogggleRequestVM,
   configOverride?: AxiosRequestConfig,
 ): Promise<SwaggerResponse<any>> => {
   return Http.putRequest(
-    putPartyV1PrivatePluginChangestatus.key,
+    putPartyV1PrivatePlugin.key,
     undefined,
     requestBody,
     undefined,
@@ -3260,8 +3261,7 @@ export const putPartyV1PrivatePluginChangestatus = (
 };
 
 /** Key is end point string without base url */
-putPartyV1PrivatePluginChangestatus.key =
-  "/party/v1/private/plugin/changestatus";
+putPartyV1PrivatePlugin.key = "/party/v1/private/plugin";
 
 export const putPartyV1PrivateUsersettingPreference = (
   requestBody: PreferenceUserSettingRequestVM,
@@ -3283,7 +3283,7 @@ putPartyV1PrivateUsersettingPreference.key =
 export const putPaymentV1PrivateEpayrequestAssigneduser = (
   requestBody: UpdateEpayRequestAssignedUserRequestVM,
   configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<EPayRequestInfoResponseVM>> => {
+): Promise<SwaggerResponse<EpayRequestInfoResponseVM>> => {
   return Http.putRequest(
     putPaymentV1PrivateEpayrequestAssigneduser.key,
     undefined,
@@ -3296,23 +3296,6 @@ export const putPaymentV1PrivateEpayrequestAssigneduser = (
 /** Key is end point string without base url */
 putPaymentV1PrivateEpayrequestAssigneduser.key =
   "/payment/v1/private/epayrequest/assigneduser";
-
-export const putPaymentV1PrivateEpayrequestCustomdata = (
-  requestBody: UpdateEpayRequestCustomDataRequestVM,
-  configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<EPayRequestInfoResponseVM>> => {
-  return Http.putRequest(
-    putPaymentV1PrivateEpayrequestCustomdata.key,
-    undefined,
-    requestBody,
-    undefined,
-    overrideConfig(_CONSTANT1, configOverride),
-  );
-};
-
-/** Key is end point string without base url */
-putPaymentV1PrivateEpayrequestCustomdata.key =
-  "/payment/v1/private/epayrequest/customdata";
 
 export const putPaymentV1PublicEpayrequestCancel = (
   queryParams?: PutPaymentV1PublicEpayrequestCancelQueryParams,
@@ -3330,6 +3313,23 @@ export const putPaymentV1PublicEpayrequestCancel = (
 /** Key is end point string without base url */
 putPaymentV1PublicEpayrequestCancel.key =
   "/payment/v1/public/epayrequest/cancel";
+
+export const putPaymentV1PublicEpayrequestCustomdata = (
+  requestBody: UpdateEpayRequestCustomDataRequestVM,
+  configOverride?: AxiosRequestConfig,
+): Promise<SwaggerResponse<EpayRequestInfoResponseVM>> => {
+  return Http.putRequest(
+    putPaymentV1PublicEpayrequestCustomdata.key,
+    undefined,
+    requestBody,
+    undefined,
+    overrideConfig(_CONSTANT1, configOverride),
+  );
+};
+
+/** Key is end point string without base url */
+putPaymentV1PublicEpayrequestCustomdata.key =
+  "/payment/v1/public/epayrequest/customdata";
 
 export const putSettlementV1PrivateAddressbookWhitelistDisable = (
   requestBody: number[],

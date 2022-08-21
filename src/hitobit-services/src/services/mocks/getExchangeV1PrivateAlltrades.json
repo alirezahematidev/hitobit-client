@@ -5,6 +5,7 @@
     "200": {
       "list": [
         {
+          "orderId": 0,
           "symbol": "",
           "price": 0,
           "quantity": 0,
