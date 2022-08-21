@@ -1,9 +1,9 @@
 import {
   EpayRequestActualState,
-  EPayRequestInfoResponseVM,
+  EpayRequestInfoResponseVM,
   EpayRequestListResponseVM,
   getPaymentV1PrivateEpayrequestList,
-  useGetPaymentV1PrivateEpayrequestInfoToken,
+  useGetPaymentV1PublicEpayrequestInfoToken,
 } from "hitobit-services";
 import { useQueryClient } from "react-query";
 import { useUserSignalREvent } from "./useUserSignalREvent";
@@ -12,9 +12,8 @@ const useEPayUpdater = () => {
   const client = useQueryClient();
 
   useUserSignalREvent("epayRequestChangeStatus", (data) => {
-    client.setQueryData<EPayRequestInfoResponseVM>(
-      useGetPaymentV1PrivateEpayrequestInfoToken.info({ token: data.token })
-        .key,
+    client.setQueryData<EpayRequestInfoResponseVM>(
+      useGetPaymentV1PublicEpayrequestInfoToken.info({ token: data.token }).key,
       (prev) => ({
         ...prev,
         amount: data.amount ?? prev?.amount,

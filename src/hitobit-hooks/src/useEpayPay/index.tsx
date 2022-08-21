@@ -1,7 +1,7 @@
 import {
   EpayPayWithWalletRequestVM,
   RequestError,
-  useGetPaymentV1PrivateEpayrequestInfoToken,
+  useGetPaymentV1PublicEpayrequestInfoToken,
   usePostPaymentV1PrivateEpayrequestPaywithwallet,
   UserWalletDisplayResponseVM,
 } from "hitobit-services";
@@ -26,7 +26,7 @@ const useEpayPay = ({
   getAfterPayRedirectUri: (clientUniqueId: string) => string;
   redirectToPayLink: (paymentLink: string) => string;
 }) => {
-  const { data } = useGetPaymentV1PrivateEpayrequestInfoToken(
+  const { data } = useGetPaymentV1PublicEpayrequestInfoToken(
     {
       token,
     },
