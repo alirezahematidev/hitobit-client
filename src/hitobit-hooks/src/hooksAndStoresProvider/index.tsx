@@ -1,5 +1,6 @@
 import { MessageHeaders } from "@microsoft/signalr";
 import { initializeI18n } from "hitobit-modules";
+import { getAxiosInstance } from "hitobit-services";
 import {
   AuthenticationProvider,
   BaseCurrencyStoreProvider,
@@ -8,7 +9,7 @@ import {
   setStoredBaseCurrency,
   setStoredSeletedSymbol,
 } from "hitobit-store";
-import { Fragment, lazy, ReactNode } from "react";
+import { Fragment, lazy, ReactNode, useEffect } from "react";
 import { QueryClientProvider, useQuery } from "react-query";
 import { kline } from "../kline";
 import { queryClient } from "../queryClient";
@@ -29,9 +30,9 @@ export interface ProvidersProps {
     en: Resource;
   };
   userSignalRDependencies?: any[];
+  customRequestHeaders?: Record<string, string>;
   userSignalRHeaders?: MessageHeaders;
 }
-
 const HitobitClientProvider = ({
   children,
   initializer,
@@ -40,9 +41,20 @@ const HitobitClientProvider = ({
   fallback,
   userSignalRDependencies,
   userSignalRHeaders,
+  customRequestHeaders,
 }: ProvidersProps) => {
   const MaybeUserManagerProvider =
     typeof window === "undefined" ? Fragment : UserManagerProvider;
+
+  useEffect(() => {
+    if (customRequestHeaders) {
+      const axiosInstance = getAxiosInstance(undefined);
+      axiosInstance.defaults.headers.common = {
+        ...axiosInstance.defaults.headers.common,
+        ...customRequestHeaders,
+      };
+    }
+  }, [customRequestHeaders]);
 
   return (
     <MaybeUserManagerProvider>
