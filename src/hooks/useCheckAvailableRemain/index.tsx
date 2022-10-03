@@ -16,7 +16,7 @@ export const useCheckAvailableRemain = () => {
       return 0;
     }
     const targetMakret = getSymbolMarketTicker(marketSymbol);
-    const availableRemain = targetMakret?.quoteCurrency?.availableRemain || 0;
+    const availableRemain = targetMakret?.baseCurrency?.availableRemain || 0;
     return availableRemain;
   };
   const checkIRR = (value: number, baseCurrencySymbol?: string) => {
