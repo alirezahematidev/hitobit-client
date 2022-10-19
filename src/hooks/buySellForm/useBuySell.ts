@@ -94,6 +94,7 @@ export const useBuySell = (callbacks?: BuySellProps) => {
     mutate: placeOrder,
     error: orderError,
     isLoading: isOrderLoading,
+    reset: resetApi,
   } = usePostExchangeV1PrivateOrder({
     onSuccess: (data) => {
       callbacks?.onSuccess?.(data);
@@ -203,5 +204,6 @@ export const useBuySell = (callbacks?: BuySellProps) => {
     selectedMarket,
     lastChangeInput,
     selectedAssignedValue,
+    reset: resetApi,
   };
 };
