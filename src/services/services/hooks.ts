@@ -65,10 +65,11 @@ import {
   getCapitalV1PrivateWithdrawList,
   getCapitalV1PrivateWithdrawRecent,
   getCapitalV1PrivateWithdrawTodaytotal,
+  getCapitalV1ProtectedWithdrawInfo,
   getCapitalV1PublicCurrencyAll,
   getCapitalV1PublicMoneynetworkAll,
   getEngagementV1PrivateNotification,
-  getEngagementV1PrivateNotificationCount,
+  getEngagementV1PrivateNotificationType,
   getExchangeV1PrivateAllorderlist,
   getExchangeV1PrivateAllorders,
   getExchangeV1PrivateAlltrades,
@@ -89,7 +90,6 @@ import {
   getPartyV1PrivateDomainMultiwallet,
   getPartyV1PrivateDomainSetting,
   getPartyV1PrivateFavoritemarket,
-  getPartyV1PrivateIdentificationlevelInfo,
   getPartyV1PrivateIdentificationlevelUserInfo,
   getPartyV1PrivateNotificationAll,
   getPartyV1PrivateNotificationTypes,
@@ -164,6 +164,7 @@ import {
   postExchangeV1PrivateOrder,
   postExchangeV1PrivateOrderOco,
   postPartyV1PrivateFavoritemarket,
+  postPartyV1PrivateIdentificationlevelLevelone,
   postPartyV1PrivateIdentificationlevelLevelthree,
   postPartyV1PrivateIdentificationlevelLeveltwo,
   postPartyV1PrivateUserProfileimage,
@@ -282,6 +283,7 @@ import {
   GetCapitalV1PrivateSettlementListQueryParams,
   GetCapitalV1PrivateWithdrawDetailQueryParams,
   GetCapitalV1PrivateWithdrawListQueryParams,
+  GetCapitalV1ProtectedWithdrawInfoQueryParams,
   GetEngagementV1PrivateNotificationQueryParams,
   GetExchangeV1PrivateAllorderlistQueryParams,
   GetExchangeV1PrivateAllordersQueryParams,
@@ -329,10 +331,10 @@ import {
   GetWalletV1PrivateUserassetSpotDefaultQueryParams,
   GetWalletV1PrivateUserbankStatusQueryParams,
   GetWalletV1PublicFindQueryParams,
+  GetWithdrawRequestUserWalletItemResponseVM,
   GlobalWalletProviderResponseVM,
   GroupTransferMoneyRequestVM,
   GroupTransferResponseVM,
-  IdentificationLevel,
   IdentificationLevelGuideResponseVM,
   IdentityStatus,
   InternalWithdrawResponseVM,
@@ -375,7 +377,6 @@ import {
   PuzzleSubmissionRequestVM,
   QrCodeResponseVM,
   RecentTradeResponseVM,
-  ReferralHistoryListVM,
   RegisterRequestVM,
   RegisterResponseVM,
   RemoveEmailRequestVM,
@@ -393,6 +394,7 @@ import {
   TradeReferralCommissionHistoryListResponseVM,
   TradeReferralCommissionHistoryResponseVM,
   TradeReferralCommissionRankingResponseVM,
+  TradeReferralHistoryListResponseVM,
   TradeResposneListVM,
   TransactionHistoryDetailResponseVM,
   TransferMoneyRequestVM,
@@ -408,6 +410,7 @@ import {
   UserDepositAddressRequestVM,
   UserDepositAddressResponseVM,
   UserExistResponseVM,
+  UserIdentificationLevelOneRequestVM,
   UserIdentificationLevelThreeRequestVM,
   UserIdentificationLevelTwoRequestVM,
   UserInfoVM,
@@ -1083,7 +1086,7 @@ export const useGetAnalyticsV1PrivateTradereferralcommissionhistoryReferralhisto
   (
     queryParams?: GetAnalyticsV1PrivateTradereferralcommissionhistoryReferralhistoryQueryParams,
     options?: UseInfiniteQueryOptions<
-      SwaggerResponse<ReferralHistoryListVM>,
+      SwaggerResponse<TradeReferralHistoryListResponseVM>,
       RequestError | Error
     >,
     configOverride?: AxiosRequestConfig,
@@ -1144,7 +1147,7 @@ useGetAnalyticsV1PrivateTradereferralcommissionhistoryReferralhistory.prefetch =
     client: QueryClient,
     queryParams?: GetAnalyticsV1PrivateTradereferralcommissionhistoryReferralhistoryQueryParams,
     options?: UseInfiniteQueryOptions<
-      SwaggerResponse<ReferralHistoryListVM>,
+      SwaggerResponse<TradeReferralHistoryListResponseVM>,
       RequestError | Error
     >,
     configOverride?: AxiosRequestConfig,
@@ -2325,6 +2328,46 @@ useGetCapitalV1PrivateWithdrawTodaytotal.prefetch = (
     ? Promise.resolve()
     : client.prefetchQuery(key, () => fun(), options);
 };
+export const useGetCapitalV1ProtectedWithdrawInfo = (
+  queryParams?: GetCapitalV1ProtectedWithdrawInfoQueryParams,
+  options?: SwaggerTypescriptUseQueryOptions<GetWithdrawRequestUserWalletItemResponseVM>,
+  configOverride?: AxiosRequestConfig,
+) => {
+  const { key, fun } = useGetCapitalV1ProtectedWithdrawInfo.info(
+    queryParams,
+    configOverride,
+  );
+  return useQuery(key, fun, options);
+};
+useGetCapitalV1ProtectedWithdrawInfo.info = (
+  queryParams?: GetCapitalV1ProtectedWithdrawInfoQueryParams,
+  configOverride?: AxiosRequestConfig,
+) => {
+  return {
+    key: [getCapitalV1ProtectedWithdrawInfo.key, queryParams] as QueryKey,
+    fun: () =>
+      getCapitalV1ProtectedWithdrawInfo(
+        queryParams,
+
+        configOverride,
+      ),
+  };
+};
+useGetCapitalV1ProtectedWithdrawInfo.prefetch = (
+  client: QueryClient,
+  queryParams?: GetCapitalV1ProtectedWithdrawInfoQueryParams,
+  options?: SwaggerTypescriptUseQueryOptions<GetWithdrawRequestUserWalletItemResponseVM>,
+  configOverride?: AxiosRequestConfig,
+) => {
+  const { key, fun } = useGetCapitalV1ProtectedWithdrawInfo.info(
+    queryParams,
+    configOverride,
+  );
+
+  return client.getQueryData(key)
+    ? Promise.resolve()
+    : client.prefetchQuery(key, () => fun(), options);
+};
 export const useGetCapitalV1PublicCurrencyAll = (
   options?: SwaggerTypescriptUseQueryOptions<CurrencyResponseVM[]>,
   configOverride?: AxiosRequestConfig,
@@ -2419,25 +2462,25 @@ useGetEngagementV1PrivateNotification.prefetch = (
     ? Promise.resolve()
     : client.prefetchQuery(key, () => fun(), options);
 };
-export const useGetEngagementV1PrivateNotificationCount = (
+export const useGetEngagementV1PrivateNotificationType = (
   options?: SwaggerTypescriptUseQueryOptions<
     NotificationCountByTypeResponseVM[]
   >,
   configOverride?: AxiosRequestConfig,
 ) => {
   const { key, fun } =
-    useGetEngagementV1PrivateNotificationCount.info(configOverride);
+    useGetEngagementV1PrivateNotificationType.info(configOverride);
   return useQuery(key, fun, options);
 };
-useGetEngagementV1PrivateNotificationCount.info = (
+useGetEngagementV1PrivateNotificationType.info = (
   configOverride?: AxiosRequestConfig,
 ) => {
   return {
-    key: [getEngagementV1PrivateNotificationCount.key] as QueryKey,
-    fun: () => getEngagementV1PrivateNotificationCount(configOverride),
+    key: [getEngagementV1PrivateNotificationType.key] as QueryKey,
+    fun: () => getEngagementV1PrivateNotificationType(configOverride),
   };
 };
-useGetEngagementV1PrivateNotificationCount.prefetch = (
+useGetEngagementV1PrivateNotificationType.prefetch = (
   client: QueryClient,
   options?: SwaggerTypescriptUseQueryOptions<
     NotificationCountByTypeResponseVM[]
@@ -2445,7 +2488,7 @@ useGetEngagementV1PrivateNotificationCount.prefetch = (
   configOverride?: AxiosRequestConfig,
 ) => {
   const { key, fun } =
-    useGetEngagementV1PrivateNotificationCount.info(configOverride);
+    useGetEngagementV1PrivateNotificationType.info(configOverride);
 
   return client.getQueryData(key)
     ? Promise.resolve()
@@ -3216,34 +3259,6 @@ useGetPartyV1PrivateFavoritemarket.prefetch = (
     queryParams,
     configOverride,
   );
-
-  return client.getQueryData(key)
-    ? Promise.resolve()
-    : client.prefetchQuery(key, () => fun(), options);
-};
-export const useGetPartyV1PrivateIdentificationlevelInfo = (
-  options?: SwaggerTypescriptUseQueryOptions<IdentificationLevel>,
-  configOverride?: AxiosRequestConfig,
-) => {
-  const { key, fun } =
-    useGetPartyV1PrivateIdentificationlevelInfo.info(configOverride);
-  return useQuery(key, fun, options);
-};
-useGetPartyV1PrivateIdentificationlevelInfo.info = (
-  configOverride?: AxiosRequestConfig,
-) => {
-  return {
-    key: [getPartyV1PrivateIdentificationlevelInfo.key] as QueryKey,
-    fun: () => getPartyV1PrivateIdentificationlevelInfo(configOverride),
-  };
-};
-useGetPartyV1PrivateIdentificationlevelInfo.prefetch = (
-  client: QueryClient,
-  options?: SwaggerTypescriptUseQueryOptions<IdentificationLevel>,
-  configOverride?: AxiosRequestConfig,
-) => {
-  const { key, fun } =
-    useGetPartyV1PrivateIdentificationlevelInfo.info(configOverride);
 
   return client.getQueryData(key)
     ? Promise.resolve()
@@ -5083,7 +5098,7 @@ export const usePostAuthV1PrivateApikey = <TExtra>(
 
 export const usePostAuthV1PrivateAuthDisabletwofactor = <TExtra>(
   options?: SwaggerTypescriptUseMutationOptions<
-    QrCodeResponseVM,
+    any,
     {
       requestBody: ChangeTwoFactorRequestVM;
       headerParams?: { platformType: PlatformType };
@@ -5153,7 +5168,7 @@ export const usePostAuthV1PrivateAuthEmailSendcode = <TExtra>(
 
 export const usePostAuthV1PrivateAuthEnabletwofactor = <TExtra>(
   options?: SwaggerTypescriptUseMutationOptions<
-    QrCodeResponseVM,
+    any,
     {
       requestBody: ChangeTwoFactorRequestVM;
       headerParams?: { platformType: PlatformType };
@@ -5558,6 +5573,28 @@ export const usePostPartyV1PrivateFavoritemarket = <TExtra>(
     } = _o || {};
 
     return postPartyV1PrivateFavoritemarket(
+      requestBody,
+
+      configOverride,
+    );
+  }, options);
+};
+
+export const usePostPartyV1PrivateIdentificationlevelLevelone = <TExtra>(
+  options?: SwaggerTypescriptUseMutationOptions<
+    any,
+    { requestBody: UserIdentificationLevelOneRequestVM },
+    TExtra
+  >,
+) => {
+  return useMutation((_o) => {
+    const {
+      requestBody,
+
+      configOverride,
+    } = _o || {};
+
+    return postPartyV1PrivateIdentificationlevelLevelone(
       requestBody,
 
       configOverride,

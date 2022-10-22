@@ -81,6 +81,7 @@ import {
   GetCapitalV1PrivateSettlementListQueryParams,
   GetCapitalV1PrivateWithdrawDetailQueryParams,
   GetCapitalV1PrivateWithdrawListQueryParams,
+  GetCapitalV1ProtectedWithdrawInfoQueryParams,
   GetEngagementV1PrivateNotificationQueryParams,
   GetExchangeV1PrivateAllorderlistQueryParams,
   GetExchangeV1PrivateAllordersQueryParams,
@@ -128,10 +129,10 @@ import {
   GetWalletV1PrivateUserassetSpotDefaultQueryParams,
   GetWalletV1PrivateUserbankStatusQueryParams,
   GetWalletV1PublicFindQueryParams,
+  GetWithdrawRequestUserWalletItemResponseVM,
   GlobalWalletProviderResponseVM,
   GroupTransferMoneyRequestVM,
   GroupTransferResponseVM,
-  IdentificationLevel,
   IdentificationLevelGuideResponseVM,
   IdentityStatus,
   InternalWithdrawResponseVM,
@@ -174,7 +175,6 @@ import {
   PuzzleSubmissionRequestVM,
   QrCodeResponseVM,
   RecentTradeResponseVM,
-  ReferralHistoryListVM,
   RegisterRequestVM,
   RegisterResponseVM,
   RemoveEmailRequestVM,
@@ -192,6 +192,7 @@ import {
   TradeReferralCommissionHistoryListResponseVM,
   TradeReferralCommissionHistoryResponseVM,
   TradeReferralCommissionRankingResponseVM,
+  TradeReferralHistoryListResponseVM,
   TradeResposneListVM,
   TransactionHistoryDetailResponseVM,
   TransferMoneyRequestVM,
@@ -207,6 +208,7 @@ import {
   UserDepositAddressRequestVM,
   UserDepositAddressResponseVM,
   UserExistResponseVM,
+  UserIdentificationLevelOneRequestVM,
   UserIdentificationLevelThreeRequestVM,
   UserIdentificationLevelTwoRequestVM,
   UserInfoVM,
@@ -232,6 +234,9 @@ import {
   WithdrawRequestUserWalletCreateRequestVM,
   WithdrawTransactionHistoryListResponseVM,
 } from "./types";
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const __DEV__ = process.env.NODE_ENV !== "production";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function overrideConfig(
@@ -601,7 +606,7 @@ export const getAnalyticsV1PrivateTradereferralcommissionhistoryReferralhistory 
   (
     queryParams?: GetAnalyticsV1PrivateTradereferralcommissionhistoryReferralhistoryQueryParams,
     configOverride?: AxiosRequestConfig,
-  ): Promise<SwaggerResponse<ReferralHistoryListVM>> => {
+  ): Promise<SwaggerResponse<TradeReferralHistoryListResponseVM>> => {
     return Http.getRequest(
       getAnalyticsV1PrivateTradereferralcommissionhistoryReferralhistory.key,
       queryParams,
@@ -1018,6 +1023,22 @@ export const getCapitalV1PrivateWithdrawTodaytotal = (
 getCapitalV1PrivateWithdrawTodaytotal.key =
   "/capital/v1/private/withdraw/todaytotal";
 
+export const getCapitalV1ProtectedWithdrawInfo = (
+  queryParams?: GetCapitalV1ProtectedWithdrawInfoQueryParams,
+  configOverride?: AxiosRequestConfig,
+): Promise<SwaggerResponse<GetWithdrawRequestUserWalletItemResponseVM>> => {
+  return Http.getRequest(
+    getCapitalV1ProtectedWithdrawInfo.key,
+    queryParams,
+    undefined,
+    undefined,
+    overrideConfig(_CONSTANT1, configOverride),
+  );
+};
+
+/** Key is end point string without base url */
+getCapitalV1ProtectedWithdrawInfo.key = "/capital/v1/protected/withdraw/info";
+
 export const getCapitalV1PublicCurrencyAll = (
   configOverride?: AxiosRequestConfig,
 ): Promise<SwaggerResponse<CurrencyResponseVM[]>> => {
@@ -1064,11 +1085,11 @@ export const getEngagementV1PrivateNotification = (
 /** Key is end point string without base url */
 getEngagementV1PrivateNotification.key = "/engagement/v1/private/notification";
 
-export const getEngagementV1PrivateNotificationCount = (
+export const getEngagementV1PrivateNotificationType = (
   configOverride?: AxiosRequestConfig,
 ): Promise<SwaggerResponse<NotificationCountByTypeResponseVM[]>> => {
   return Http.getRequest(
-    getEngagementV1PrivateNotificationCount.key,
+    getEngagementV1PrivateNotificationType.key,
     undefined,
     undefined,
     undefined,
@@ -1077,8 +1098,8 @@ export const getEngagementV1PrivateNotificationCount = (
 };
 
 /** Key is end point string without base url */
-getEngagementV1PrivateNotificationCount.key =
-  "/engagement/v1/private/notification/count";
+getEngagementV1PrivateNotificationType.key =
+  "/engagement/v1/private/notification/type";
 
 export const getExchangeV1PrivateAllorderlist = (
   queryParams?: GetExchangeV1PrivateAllorderlistQueryParams,
@@ -1395,22 +1416,6 @@ export const getPartyV1PrivateFavoritemarket = (
 
 /** Key is end point string without base url */
 getPartyV1PrivateFavoritemarket.key = "/party/v1/private/favoritemarket";
-
-export const getPartyV1PrivateIdentificationlevelInfo = (
-  configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<IdentificationLevel>> => {
-  return Http.getRequest(
-    getPartyV1PrivateIdentificationlevelInfo.key,
-    undefined,
-    undefined,
-    undefined,
-    overrideConfig(_CONSTANT1, configOverride),
-  );
-};
-
-/** Key is end point string without base url */
-getPartyV1PrivateIdentificationlevelInfo.key =
-  "/party/v1/private/identificationlevel/info";
 
 export const getPartyV1PrivateIdentificationlevelUserInfo = (
   configOverride?: AxiosRequestConfig,
@@ -2240,7 +2245,7 @@ export const postAuthV1PrivateAuthDisabletwofactor = (
   requestBody: ChangeTwoFactorRequestVM,
   headerParams?: { platformType: PlatformType },
   configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<QrCodeResponseVM>> => {
+): Promise<SwaggerResponse<any>> => {
   return Http.postRequest(
     postAuthV1PrivateAuthDisabletwofactor.key,
     undefined,
@@ -2249,7 +2254,7 @@ export const postAuthV1PrivateAuthDisabletwofactor = (
     overrideConfig(
       {
         headers: {
-          ..._CONSTANT2,
+          ..._CONSTANT3,
           ...headerParams,
         },
       },
@@ -2307,7 +2312,7 @@ export const postAuthV1PrivateAuthEnabletwofactor = (
   requestBody: ChangeTwoFactorRequestVM,
   headerParams?: { platformType: PlatformType },
   configOverride?: AxiosRequestConfig,
-): Promise<SwaggerResponse<QrCodeResponseVM>> => {
+): Promise<SwaggerResponse<any>> => {
   return Http.postRequest(
     postAuthV1PrivateAuthEnabletwofactor.key,
     undefined,
@@ -2316,7 +2321,7 @@ export const postAuthV1PrivateAuthEnabletwofactor = (
     overrideConfig(
       {
         headers: {
-          ..._CONSTANT2,
+          ..._CONSTANT3,
           ...headerParams,
         },
       },
@@ -2674,6 +2679,23 @@ export const postPartyV1PrivateFavoritemarket = (
 
 /** Key is end point string without base url */
 postPartyV1PrivateFavoritemarket.key = "/party/v1/private/favoritemarket";
+
+export const postPartyV1PrivateIdentificationlevelLevelone = (
+  requestBody: UserIdentificationLevelOneRequestVM,
+  configOverride?: AxiosRequestConfig,
+): Promise<SwaggerResponse<any>> => {
+  return Http.postRequest(
+    postPartyV1PrivateIdentificationlevelLevelone.key,
+    undefined,
+    requestBody,
+    undefined,
+    overrideConfig(_CONSTANT0, configOverride),
+  );
+};
+
+/** Key is end point string without base url */
+postPartyV1PrivateIdentificationlevelLevelone.key =
+  "/party/v1/private/identificationlevel/levelone";
 
 export const postPartyV1PrivateIdentificationlevelLevelthree = (
   requestBody: UserIdentificationLevelThreeRequestVM,
