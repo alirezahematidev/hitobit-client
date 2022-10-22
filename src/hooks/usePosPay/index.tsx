@@ -113,9 +113,9 @@ export function usePosPay({
         userWalletNumber: targetWalletNumber,
         amount: Number(amount),
         description: description,
-        callbackType: "Redirect",
+        redirectType: "Redirect",
         clientUniqueId,
-        callbackUrl: getAfterPayRedirectUri(clientUniqueId),
+        redirectUrl: getAfterPayRedirectUri(clientUniqueId),
         getCommissionFromPayer: true,
       },
     });
